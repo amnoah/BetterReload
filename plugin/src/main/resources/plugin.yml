@@ -1,0 +1,18 @@
+name: BetterReload
+website: https://github.com/amnoah/BetterReload
+version: 1.0
+main: better.reload.plugin.BetterReload
+api-version: 1.13
+load: POSTWORLD
+authors:
+  - am noah
+
+permissions:
+  better.reload:
+    description: Allows users to run the reload command.
+    default: op
+
+commands:
+  reload:
+    description: Starts a server reload.
+    permission: better.reload

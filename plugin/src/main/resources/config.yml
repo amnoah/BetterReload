@@ -1,0 +1,14 @@
+# Booleans
+
+log-messages: true
+
+#
+# Messages
+#
+
+# Set to '' to disable.
+start-reload-message: '&b&lBR > &r&7Starting reload...'
+
+# Set to '' to disable.
+# All %ms%'s will be replaced in the amount of time a reload took to complete (in milliseconds).
+end-reload-message: '&b&lBR > &r&7Reload finished in &b%ms% &7ms!'

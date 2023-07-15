@@ -1,0 +1,9 @@
+name: Example
+version: 1.0
+main: better.reload.example.Example
+api-version: 1.13
+load: POSTWORLD
+softdepend:
+  - BetterReload
+authors:
+  - am noah
