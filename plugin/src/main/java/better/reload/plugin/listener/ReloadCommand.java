@@ -41,10 +41,6 @@ public class ReloadCommand implements CommandExecutor {
         if (commandSender instanceof Player) {
             commandSender.sendMessage(ChatColor.translateColorCodes(string));
             if (Configuration.LOG_MESSAGES) BetterReload.PLUGIN.getLogger().info(ChatColor.stripColorCodes(string));
-        } else {
-            string = ChatColor.stripColorCodes(string);
-            commandSender.sendMessage(string);
-            if (Configuration.LOG_MESSAGES) BetterReload.PLUGIN.getLogger().info(string);
-        }
+        } else BetterReload.PLUGIN.getLogger().info(ChatColor.stripColorCodes(string));
     }
 }

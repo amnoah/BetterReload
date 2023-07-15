@@ -3,6 +3,7 @@ package better.reload.plugin.listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.RemoteServerCommandEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
 /**
@@ -19,6 +20,15 @@ public class PreCommandProcessing implements Listener {
     @EventHandler
     public void handleCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.getMessage().split(" ")[0].equalsIgnoreCase("/reload")) event.setMessage("/BetterReload:Reload");
+    }
+
+    /**
+     * This void will modify commands from the server sent through RCON before they're processed.
+     * I am unable to test this event, but it should theoretically work.
+     */
+    @EventHandler
+    public void handleRemoteServerCommand(RemoteServerCommandEvent event) {
+        if (event.getCommand().split(" ")[0].equalsIgnoreCase("reload")) event.setCommand("BetterReload:Reload");
     }
 
     /**

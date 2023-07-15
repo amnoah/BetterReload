@@ -9,8 +9,7 @@ import java.util.regex.Pattern;
 public class ChatColor {
 
     // Taken from Bukkit's ChatColor.
-    private static final Pattern TRANSLATE = Pattern.compile("(?i)&[0-9A-FK-ORX]");
-    private static final Pattern STRIP = Pattern.compile("(?i)§[0-9A-FK-ORX]");
+    private static final Pattern PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]");
 
     private ChatColor() {}
 
@@ -19,14 +18,14 @@ public class ChatColor {
      * The only difference from Bukkit's method is that it looks for the '&' symbol instead of the '§' symbol.
      */
     public static String stripColorCodes(String input) {
-        return STRIP.matcher(input).replaceAll("");
+        return PATTERN.matcher(input).replaceAll("");
     }
 
     /**
      * Convert a message with '&' color codes to one with '§' color codes.
      */
     public static String translateColorCodes(String input) {
-        Matcher matcher = TRANSLATE.matcher(input);
+        Matcher matcher = PATTERN.matcher(input);
         StringBuffer output = new StringBuffer();
 
         while (matcher.find()) {

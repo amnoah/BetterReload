@@ -1,5 +1,7 @@
 # Booleans
 
+# Toggle whether messages sent to players should also be sent to console.
+# Reloads started by the server will be logged regardless.
 log-messages: true
 
 #

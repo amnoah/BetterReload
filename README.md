@@ -13,10 +13,10 @@ process up to the plugins.
 # How Does It Work?
 
 As far as I can tell you cannot simply override a Bukkit command, leading to the decision to instead alter the command 
-before it is fully processed. When the command /reload is sent through the server, it is swapped to /BetterReload:reload
+before it is fully processed. When the command `/reload` is sent through the server, it is swapped to `/BetterReload:reload`
 before being processed.
 
-This method also allows Bukkit's /reload command to be accessible through /Bukkit:reload, although I would personally
+This method also allows Bukkit's `/reload` command to be accessible through `/Bukkit:reload`, although I would personally
 advise against its usage regardless.
 
 # How To Use? (Server Owner)
@@ -31,3 +31,8 @@ and select "api". With these settings in place you can copy the repository and d
 needing only a dependency reload to have BetterReload accessibly from your project.
 
 The example module of this project demonstrates this process in Maven as well as actual usage of the ReloadEvent.
+
+# Issues
+
+- `BlockCommandSender`s (typically command blocks) cannot use the `/reload` command as there is no accessible preprocessing
+stage for them. Instead, they must use the command `/BetterReload:reload`.
