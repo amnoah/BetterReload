@@ -18,3 +18,16 @@ before being processed.
 
 This method also allows Bukkit's /reload command to be accessible through /Bukkit:reload, although I would personally
 advise against its usage regardless.
+
+# How To Use? (Server Owner)
+
+Simply install the latest jar file labeled as "plugin" in the releases tab.
+
+# How To Use? (Developer)
+
+You can add BetterReload to your project using [JitPack](https://jitpack.io/#amnoah/betterreload/). First, click the
+"Get It" button alongside the latest version. Next, select the dependency system you're using. Lastly, click "Subproject"
+and select "api". With these settings in place you can copy the repository and dependency settings into your project,
+needing only a dependency reload to have BetterReload accessibly from your project.
+
+The example module of this project demonstrates this process in Maven as well as actual usage of the ReloadEvent.
