@@ -1,5 +1,5 @@
 name: Example
-version: 1.0
+version: 1.0.0
 main: better.reload.example.Example
 api-version: 1.13
 load: POSTWORLD

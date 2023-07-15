@@ -21,14 +21,14 @@ advise against its usage regardless.
 
 # How To Use? (Server Owner)
 
-Simply install the latest jar file labeled as "plugin" in the releases tab.
+Simply install the jar file in the latest release labeled as "plugin".
 
 # How To Use? (Developer)
 
-You can add BetterReload to your project using [JitPack](https://jitpack.io/#amnoah/betterreload/). First, click the
-"Get It" button alongside the latest version. Next, select the dependency system you're using. Lastly, click "Subproject"
-and select "api". With these settings in place you can copy the repository and dependency settings into your project,
-needing only a dependency reload to have BetterReload accessibly from your project.
+You can add BetterReload to your project using [JitPack](https://jitpack.io/#amnoah/betterreload/API-v1.0.0). First, 
+select the dependency system you're using. Next, click "Subproject" and select "api". With these settings in place you 
+can copy the repository and dependency settings into your project, needing only a dependency reload to have BetterReload 
+accessible from your project.
 
 The example module of this project demonstrates this process in Maven as well as actual usage of the ReloadEvent.
 

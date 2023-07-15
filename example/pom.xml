@@ -5,11 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>example</artifactId>
+    <name>BetterReload-Example-${project.version}</name>
+    <version>1.0.0</version>
 
     <parent>
         <groupId>better.reload</groupId>
         <artifactId>BetterReload</artifactId>
-        <version>1.0</version>
+        <version>1.0.0</version>
     </parent>
 
     <repositories>
@@ -29,6 +31,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -38,18 +41,6 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <resources>
