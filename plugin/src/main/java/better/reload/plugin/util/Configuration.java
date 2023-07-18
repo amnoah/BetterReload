@@ -1,4 +1,4 @@
-package better.reload.plugin.configuration;
+package better.reload.plugin.util;
 
 import better.reload.plugin.BetterReload;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +16,8 @@ public class Configuration {
 
     public static String START_RELOAD_MESSAGE;
     public static String END_RELOAD_MESSAGE;
+    public static String PLUGIN_NOT_FOUND_MESSAGE;
+    public static String PLUGIN_NOT_SUPPORTED_MESSAGE;
 
     /**
      * This void will load the configuration file and update cached values.
@@ -26,7 +28,10 @@ public class Configuration {
         FileConfiguration config = BetterReload.PLUGIN.getConfig();
 
         LOG_MESSAGES = config.getBoolean("log-messages");
+
         START_RELOAD_MESSAGE = config.getString("start-reload-message");
         END_RELOAD_MESSAGE = config.getString("end-reload-message");
+        PLUGIN_NOT_FOUND_MESSAGE = config.getString("plugin-not-found-message");
+        PLUGIN_NOT_SUPPORTED_MESSAGE = config.getString("plugin-not-supported-message");
     }
 }

@@ -12,5 +12,11 @@ log-messages: true
 start-reload-message: '&b&lBR > &r&7Starting reload...'
 
 # Set to '' to disable.
-# All %ms%'s will be replaced in the amount of time a reload took to complete (in milliseconds).
+# All %ms%'s will be replaced with the amount of time a reload took to complete (in milliseconds).
 end-reload-message: '&b&lBR > &r&7Reload finished in &b%ms% &7ms!'
+
+# All %input%'s will be replaced with the plugin name input that failed to be found.
+plugin-not-found-message: '&b&lBR > &r&cCould not find plugin &b%input%&c!'
+
+# All %input%'s will be replaced with the plugin name input that failed to be reloaded.
+plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for &b%input%&c!'

@@ -1,0 +1,56 @@
+package better.reload.plugin.listener;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.RemoteServerCommandEvent;
+import org.bukkit.event.server.ServerCommandEvent;
+
+/**
+ * This class modifies command sent by players and the server if they run the command "/reload".
+ * From what I can tell Bukkit takes priority for handling the command "/reload", meaning we can't simply override it by
+ * registering our own "/reload". Thus, when a player runs "/reload" we replace their command with "/BetterReload:Reload"
+ * before the initial command is processed. Bukkit's reload method can still be accessed through "/Bukkit:Reload".
+ */
+public class PreCommandProcessingListener implements Listener {
+
+    /**
+     * This void will modify command from players before they're processed.
+     */
+    @EventHandler
+    public void handleCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        String modified = alterCommand(event.getMessage(), true);
+        if (modified != null) event.setMessage(modified);
+    }
+
+    /**
+     * This void will modify command from the server sent through RCON before they're processed.
+     * I am unable to test this event, but it should theoretically work.
+     */
+    @EventHandler
+    public void handleRemoteServerCommand(RemoteServerCommandEvent event) {
+        String modified = alterCommand(event.getCommand(), false);
+        if (modified != null) event.setCommand(modified);
+    }
+
+    /**
+     * This void will modify command from the server before they're processed.
+     */
+    @EventHandler
+    public void handleServerCommand(ServerCommandEvent event) {
+        String modified = alterCommand(event.getCommand(), false);
+        if (modified != null) event.setCommand(modified);
+    }
+
+    /**
+     * This function removes redundancy in the process of modifying the "/reload" command.
+     */
+    private String alterCommand(String message, boolean slash) {
+        String[] elements = message.split(" ");
+        if (elements[0].equalsIgnoreCase(slash ? "/reload" : "reload")) {
+            elements[0] = (slash ? "/betterreload:reload" : "betterreload:reload");
+            return String.join(" ", elements);
+        }
+        return null;
+    }
+}
