@@ -26,28 +26,6 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
 
     private List<String> autoComplete;
 
-    /*
-     * Getters.
-     */
-
-    /**
-     * This function will return a list of plugin names to use in tab-completion.
-     * If the list does not already exist it will generate it when first run.
-     */
-    public List<String> getTabComplete() {
-        if (autoComplete == null) {
-            autoComplete = new ArrayList<>();
-            for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) autoComplete.add(plugin.getName());
-            autoComplete = Collections.unmodifiableList(autoComplete);
-        }
-
-        return autoComplete;
-    }
-
-    /*
-     * Functions.
-     */
-
     /**
      * This void will be run when the "/betterreload:reload" command is run.
      */
@@ -109,7 +87,7 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
         String end = Configuration.END_RELOAD_MESSAGE.replaceAll("%ms%",String.valueOf(System.currentTimeMillis() - startReload));
         if (!end.isEmpty()) sendMessage(commandSender, end);
 
-        return false;
+        return true;
     }
 
     /**
@@ -117,7 +95,20 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return getTabComplete();
+        if (autoComplete == null) regenerateTabCompletions();
+        return autoComplete;
+    }
+
+    /**
+     * Update the cache of plugin names to display in a tab completion.
+     */
+    public void regenerateTabCompletions() {
+        autoComplete = new ArrayList<>();
+        for (RegisteredListener listener : ReloadEvent.getHandlerList().getRegisteredListeners()) {
+            if (!autoComplete.contains(listener.getPlugin().getName())) autoComplete.add(listener.getPlugin().getName());
+        }
+        Collections.sort(autoComplete);
+        autoComplete = Collections.unmodifiableList(autoComplete);
     }
 
     /**

@@ -22,7 +22,7 @@ public class TabCompleteListener implements Listener {
         switch (event.getBuffer().split(" ")[0].toLowerCase()) {
             case "/reload":
             case "/rl":
-                event.setCompletions(reloadCommand.getTabComplete());
+                event.setCompletions(reloadCommand.onTabComplete(null, null, null, null));
                 break;
             default:
                 break;

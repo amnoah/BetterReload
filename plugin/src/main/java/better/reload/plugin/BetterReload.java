@@ -21,6 +21,18 @@ public class BetterReload extends JavaPlugin {
 
     private final ReloadCommand reloadCommand = new ReloadCommand();
 
+    /*
+     * Getters.
+     */
+
+    public ReloadCommand getReloadCommand() {
+        return reloadCommand;
+    }
+
+    /*
+     * Functions.
+     */
+
     @Override
     public void onEnable() {
         PLUGIN = this;

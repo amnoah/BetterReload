@@ -16,3 +16,4 @@ commands:
   reload:
     description: Starts a server reload.
     permission: better.reload
+    usage: /<command> <plugin>
