@@ -19,7 +19,13 @@ public class TabCompleteListener implements Listener {
 
     @EventHandler
     public void handleTabComplete(TabCompleteEvent event) {
-        if (event.getBuffer().split(" ")[0].equalsIgnoreCase("/reload"))
-            event.setCompletions(reloadCommand.getTabComplete());
+        switch (event.getBuffer().split(" ")[0].toLowerCase()) {
+            case "/reload":
+            case "/rl":
+                event.setCompletions(reloadCommand.getTabComplete());
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -47,10 +47,27 @@ public class PreCommandProcessingListener implements Listener {
      */
     private String alterCommand(String message, boolean slash) {
         String[] elements = message.split(" ");
-        if (elements[0].equalsIgnoreCase(slash ? "/reload" : "reload")) {
-            elements[0] = (slash ? "/betterreload:reload" : "betterreload:reload");
-            return String.join(" ", elements);
+        if (slash) {
+            switch (message.split(" ")[0].toLowerCase()) {
+                case "/reload":
+                case "/rl":
+                    elements[0] = "/betterreload:reload";
+                    break;
+                default:
+                    return null;
+            }
+        } else {
+            switch (message.split(" ")[0].toLowerCase()) {
+                case "reload":
+                case "rl":
+                    elements[0] = "betterreload:reload";
+                    break;
+                default:
+                    return null;
+            }
+
         }
-        return null;
+
+        return String.join(" ", elements);
     }
 }
