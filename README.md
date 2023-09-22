@@ -25,10 +25,9 @@ Simply install the jar file in the latest release labeled as "plugin".
 
 # How To Use? (Developer)
 
-You can add BetterReload to your project using [JitPack](https://jitpack.io/#amnoah/betterreload/API-v1.0.0). First, 
-select the dependency system you're using. Next, click "Subproject" and select "api". With these settings in place you 
-can copy the repository and dependency settings into your project, needing only a dependency reload to have BetterReload 
-accessible from your project.
+You can add BetterReload to your project using [JitPack](https://jitpack.io/#amnoah/betterreload/API-v1.0.0). Select the
+dependency system you're using and copy the repository/dependency settings into your project. From there, just reload
+your dependencies and you should have BetterReload accessible from your project.
 
 The example module of this project demonstrates this process in Maven as well as actual usage of the ReloadEvent.
 
@@ -45,3 +44,10 @@ stage for them. Instead, they must use the command `/betterreload:reload`.
 - Example: `/reload` will send a reload event to all plugins with support built in.
 - Example: `/reload plugin1` will send the reload event to only a plugin with the name plugin1.
 - Example: `/reload plugin1 plugin2` will send the reload event to only a plugin with the name plugin1 and a plugin with the name plugin2.
+
+# Plugins That Support BetterReload
+
+I am not aware of any.
+
+If you would like your plugin featured here, make an issue on the BetterReload GitHub page with the "Add Supported Plugin"
+label. Make sure to include the name of the plugin and a link to the page you would like people directed to.
