@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventException;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
 import java.util.ArrayList;
@@ -32,9 +31,13 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         final long startReload = System.currentTimeMillis();
+        String senderName = commandSender instanceof Player ? commandSender.getName() : "";
 
         String start = Configuration.START_RELOAD_MESSAGE;
         if (!start.isEmpty()) sendMessage(commandSender, start);
+
+        // Pre-Event Commands.
+        runCommands("PRE:", senderName);
 
         ReloadEvent event = new ReloadEvent(commandSender);
 
@@ -52,42 +55,44 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
              * plugin1 twice.
              */
 
-            List<Plugin> plugins = new ArrayList<>();
-
-            // Verify whether the inputted plugin names correspond with real plugins.
             for (String pluginName : strings) {
-                Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-                if (plugin != null) {
-                    plugins.add(plugin);
-                } else {
-                    sendMessage(commandSender, Configuration.PLUGIN_NOT_FOUND_MESSAGE.replaceAll("%input%", pluginName));
-                }
-            }
-
-            // Attempt a reload for all plugins.
-            for (Plugin plugin : plugins) {
                 boolean reloaded = false;
 
                 for (RegisteredListener listener : ReloadEvent.getHandlerList().getRegisteredListeners()) {
-                    if (listener.getPlugin() != plugin) continue;
+                    if (!pluginName.equalsIgnoreCase(listener.getPlugin().getName())) continue;
 
                     try {
                         listener.callEvent(event);
                         reloaded = true;
                     } catch (EventException ignored) {
-                        BetterReload.PLUGIN.getLogger().warning("Error reloading " + plugin.getName() + "!");
+                        BetterReload.PLUGIN.getLogger().warning("Error reloading " + pluginName.toLowerCase() + "!");
                     }
                 }
 
-                if (!reloaded) sendMessage(commandSender, Configuration.PLUGIN_NOT_SUPPORTED_MESSAGE.replaceAll("%input%", plugin.getName()));
+                if (!reloaded) sendMessage(commandSender, Configuration.PLUGIN_NOT_SUPPORTED_MESSAGE.replaceAll("%input%", pluginName));
             }
         // If there's no additional input then call an event for all plugins.
         } else Bukkit.getPluginManager().callEvent(event);
+
+        // Post-Event Commands.
+        runCommands("POST:", senderName);
 
         String end = Configuration.END_RELOAD_MESSAGE.replaceAll("%ms%",String.valueOf(System.currentTimeMillis() - startReload));
         if (!end.isEmpty()) sendMessage(commandSender, end);
 
         return true;
+    }
+
+    /**
+     * Runs PRE- / POST-commands as provided in the configuration file.
+     */
+    private static void runCommands(String stage, String senderName) {
+        for (String command : Configuration.COMMANDS) {
+            if (!command.startsWith(stage)) continue;
+            if (command.length() == stage.length()) continue;
+            String finalCommand = command.substring(stage.length()).replaceAll("%ReloadCommandSender%", senderName);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+        }
     }
 
     /**

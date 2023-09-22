@@ -1,4 +1,9 @@
+# Don't Touch
+version: '1.0'
+
+#
 # Booleans
+#
 
 # Toggle whether messages sent to players should also be sent to console.
 # Reloads started by the server will be logged regardless.
@@ -15,8 +20,21 @@ start-reload-message: '&b&lBR > &r&7Starting reload...'
 # All %ms%'s will be replaced with the amount of time a reload took to complete (in milliseconds).
 end-reload-message: '&b&lBR > &r&7Reload finished in &b%ms% &7ms!'
 
-# All %input%'s will be replaced with the plugin name input that failed to be found.
-plugin-not-found-message: '&b&lBR > &r&cCould not find plugin &b%input%&c!'
-
 # All %input%'s will be replaced with the plugin name input that failed to be reloaded.
 plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for &b%input%&c!'
+
+#
+# Run Commands
+#
+
+# These commands will be run by BetterReload when a reload event is triggered.
+#
+# If before the command it includes 'PRE:', it will be run before the event.
+# If before the command it includes 'POST:', it will be run after the event.
+# If of the same stage, commands will be run top to bottom.
+#
+# The placeholder '%ReloadCommandSender%' will be replaced by the username of the player if the reload
+# was started by a player and will be replaced by '' if started by console.
+commands:
+#  - 'PRE:essentials reload'
+#  - 'POST:say Reload finished %ReloadCommandSender%!'
