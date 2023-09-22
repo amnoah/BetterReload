@@ -41,7 +41,6 @@ public class Configuration {
 
         // Check if the configuration is outdated, caching it and regenerating the config if so.
         String currentVersion = config.getString("version");
-        BetterReload.PLUGIN.getLogger().info(currentVersion);
         if (currentVersion == null || !currentVersion.equals(VERSION)) {
             try {
                 int copy = 1;
