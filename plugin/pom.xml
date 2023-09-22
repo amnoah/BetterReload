@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>plugin</artifactId>
-    <name>BetterReload-Plugin-${project.version}</name>
+    <name>${parent.artifactId}-${artifactId}-${version}</name>
     <version>1.1.0</version>
 
     <parent>

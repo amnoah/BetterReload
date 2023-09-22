@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>example</artifactId>
-    <name>BetterReload-Example-${project.version}</name>
+    <name>${parent.artifactId}-${artifactId}-${version}</name>
     <version>1.0.0</version>
 
     <parent>

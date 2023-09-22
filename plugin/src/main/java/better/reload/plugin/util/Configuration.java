@@ -5,6 +5,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 /**
@@ -25,7 +28,8 @@ public class Configuration {
     public static String END_RELOAD_MESSAGE;
     public static String PLUGIN_NOT_SUPPORTED_MESSAGE;
 
-    public static List<String> COMMANDS;
+    public static List<String> CONSOLE_COMMANDS;
+    public static List<String> PLAYER_COMMANDS;
 
     /**
      * This void will load the configuration file and update cached values.
@@ -35,28 +39,28 @@ public class Configuration {
         BetterReload.PLUGIN.reloadConfig();
         FileConfiguration config = BetterReload.PLUGIN.getConfig();
 
-        // Make sure the config file is up-to-date.
-
+        // Check if the configuration is outdated, caching it and regenerating the config if so.
         String currentVersion = config.getString("version");
+        BetterReload.PLUGIN.getLogger().info(currentVersion);
         if (currentVersion == null || !currentVersion.equals(VERSION)) {
             try {
-                // The data folder should exist, there's larger problems if it doesn't.
-                String name = "old-config-" + BetterReload.PLUGIN.getDataFolder().listFiles().length + ".yml";
+                int copy = 1;
 
-                BetterReload.PLUGIN.getLogger().warning("Replacing old configuration file! Moving it to " + name + ".");
-
-                File source = new File(config.getCurrentPath());
-                File dest = new File(BetterReload.PLUGIN.getDataFolder().getPath() + name);
-
-                if (!dest.createNewFile()) {
-                    BetterReload.PLUGIN.getLogger().warning("Could not generate old configuration file!");
-                    return;
+                while (true) {
+                    if ((new File(BetterReload.PLUGIN.getDataFolder().getPath(), "old-config-" + copy + ".yml").exists())) copy++;
+                    else break;
                 }
 
-                Files.copy(source.toPath(), dest.toPath());
+                String name = "old-config-" + copy + ".yml";
+                BetterReload.PLUGIN.getLogger().warning("Replacing the old configuration file! Moving it to " + name + ".");
+
+                File source = new File(BetterReload.PLUGIN.getDataFolder(), "config.yml");
+                Path dest = Paths.get(BetterReload.PLUGIN.getDataFolder().getPath(), name);
+
+                Files.copy(source.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
 
                 if (!source.delete()) {
-                    BetterReload.PLUGIN.getLogger().warning("Could not replace configuration file!");
+                    BetterReload.PLUGIN.getLogger().warning("Could not delete the old configuration file!");
                     return;
                 }
 
@@ -77,6 +81,7 @@ public class Configuration {
         END_RELOAD_MESSAGE = config.getString("end-reload-message");
         PLUGIN_NOT_SUPPORTED_MESSAGE = config.getString("plugin-not-supported-message");
 
-        COMMANDS = config.getStringList("commands");
+        CONSOLE_COMMANDS = config.getStringList("console-commands");
+        PLAYER_COMMANDS = config.getStringList("player-commands");
     }
 }

@@ -37,7 +37,7 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
         if (!start.isEmpty()) sendMessage(commandSender, start);
 
         // Pre-Event Commands.
-        runCommands("PRE:", senderName);
+        runCommands("pre:", commandSender);
 
         ReloadEvent event = new ReloadEvent(commandSender);
 
@@ -54,7 +54,6 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
              * Allowing plugins to reload multiple times. For example, "/reload plugin1 plugin2 plugin1" will reload
              * plugin1 twice.
              */
-
             for (String pluginName : strings) {
                 boolean reloaded = false;
 
@@ -75,7 +74,7 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
         } else Bukkit.getPluginManager().callEvent(event);
 
         // Post-Event Commands.
-        runCommands("POST:", senderName);
+        runCommands("post:", commandSender);
 
         String end = Configuration.END_RELOAD_MESSAGE.replaceAll("%ms%",String.valueOf(System.currentTimeMillis() - startReload));
         if (!end.isEmpty()) sendMessage(commandSender, end);
@@ -86,12 +85,30 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
     /**
      * Runs PRE- / POST-commands as provided in the configuration file.
      */
-    private static void runCommands(String stage, String senderName) {
-        for (String command : Configuration.COMMANDS) {
-            if (!command.startsWith(stage)) continue;
-            if (command.length() == stage.length()) continue;
-            String finalCommand = command.substring(stage.length()).replaceAll("%ReloadCommandSender%", senderName);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+    private static void runCommands(String stage, CommandSender commandSender) {
+        if (commandSender instanceof Player) {
+            for (String command : Configuration.PLAYER_COMMANDS) {
+                if (!command.toLowerCase().startsWith(stage)) continue;
+                if (command.length() == stage.length()) continue;
+
+                String[] commandElements = command.substring(stage.length()).split(":", 2);
+                if (commandElements.length <= 1) continue;
+
+                switch (commandElements[0].toLowerCase()) {
+                    case "player":
+                        Bukkit.dispatchCommand(commandSender, commandElements[1].replaceAll("%ReloadCommandSender%", commandSender.getName()));
+                        break;
+                    case "console":
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandElements[1]);
+                        break;
+                }
+            }
+        } else {
+            for (String command : Configuration.CONSOLE_COMMANDS) {
+                if (!command.toLowerCase().startsWith(stage)) continue;
+                if (command.length() == stage.length()) continue;
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(stage.length()));
+            }
         }
     }
 

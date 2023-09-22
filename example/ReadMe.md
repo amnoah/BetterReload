@@ -1,0 +1,1 @@
+This plugin demonstrates how to add BetterReload as a dependency and how to listen to a ReloadEvent

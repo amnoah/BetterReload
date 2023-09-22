@@ -1,0 +1,1 @@
+This is my implementation of a way to replace the Bukkit reload command with the BetterReload ReloadEvent.

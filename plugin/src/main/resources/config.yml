@@ -27,14 +27,24 @@ plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for
 # Run Commands
 #
 
-# These commands will be run by BetterReload when a reload event is triggered.
+# These commands will be run by BetterReload when a reload event is triggered by console.
 #
 # If before the command it includes 'PRE:', it will be run before the event.
 # If before the command it includes 'POST:', it will be run after the event.
-# If of the same stage, commands will be run top to bottom.
-#
-# The placeholder '%ReloadCommandSender%' will be replaced by the username of the player if the reload
-# was started by a player and will be replaced by '' if started by console.
-commands:
+console-commands:
 #  - 'PRE:essentials reload'
-#  - 'POST:say Reload finished %ReloadCommandSender%!'
+#  - 'POST:say Reload finished!'
+
+# These commands will be run by BetterReload when a reload event is triggered by a player.
+#
+# If before the command it includes 'PRE:', it will be run before the event.
+# If before the command it includes 'POST:', it will be run after the event.
+# If it includes CONSOLE:, it will be run by console.
+# If it includes PLAYER:, it will be run by the player who triggered the reload.
+#
+# The placeholder '%ReloadCommandSender%' (case-sensitive) will be replaced by the username of the player if the reload
+# was started by a player and will be replaced by '' if started by console.
+#
+player-commands:
+#  - 'PRE:CONSOLE:essentials reload'
+#  - 'POST:PLAYER:msg %ReloadCommandSender% it''s done!'

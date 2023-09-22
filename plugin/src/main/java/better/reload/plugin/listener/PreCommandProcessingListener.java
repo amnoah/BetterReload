@@ -65,7 +65,6 @@ public class PreCommandProcessingListener implements Listener {
                 default:
                     return null;
             }
-
         }
 
         return String.join(" ", elements);
