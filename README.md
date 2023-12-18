@@ -47,7 +47,7 @@ stage for them. Instead, they must use the command `/betterreload:reload`.
 
 # Plugins That Support BetterReload
 
-I am not aware of any.
+- Better Messages by JustDoom | [Spigot](https://www.spigotmc.org/resources/better-messages.82830/) | [GitHub](https://github.com/JustDoom/Better-Messages)
 
 If you would like your plugin featured here, make an issue on the BetterReload GitHub page with the "Add Supported Plugin"
 label. Make sure to include the name of the plugin and a link to the page you would like people directed to.
