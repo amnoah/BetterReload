@@ -1,1 +1,3 @@
-This plugin demonstrates how to add BetterReload as a dependency and how to listen to a ReloadEvent
+# example
+
+This is a simple demonstration of how to use BetterReload (api only) and as a demonstration of the error handling.
