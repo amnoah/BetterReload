@@ -13,5 +13,8 @@ public class Reload implements Listener {
     public void onReload(ReloadEvent event) {
         event.getCommandSender().sendMessage("Hey, you ran the reload command!");
         event.getCommandSender().sendMessage("Beep, boop, I'm reloaded now!");
+
+        // Let's test the new error logging system!
+        throw new Error("funsies");
     }
 }

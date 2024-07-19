@@ -2,10 +2,12 @@ package better.reload.plugin;
 
 import better.reload.api.ReloadEvent;
 import better.reload.plugin.util.Configuration;
+import better.reload.plugin.util.ErrorLogging;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
@@ -35,8 +37,8 @@ public class ReloadManager {
         for (RegisteredListener listener : ReloadEvent.getHandlerList().getRegisteredListeners()) {
             try {
                 listener.callEvent(event);
-            } catch (Exception e) {
-                BetterReload.PLUGIN.getLogger().warning("Error reloading " + listener.getPlugin().getName() + "!");
+            } catch (EventException exception) {
+                ErrorLogging.log(listener, exception);
             }
         }
     }
@@ -64,8 +66,8 @@ public class ReloadManager {
                     reloaded = true;
                     listener.callEvent(event);
                 }
-            } catch (Exception e) {
-                BetterReload.PLUGIN.getLogger().warning("Error reloading " + plugin.getName() + "!");
+            } catch (EventException exception) {
+                ErrorLogging.log(listener, exception);
             }
         }
 
@@ -80,7 +82,7 @@ public class ReloadManager {
         PRE_RELOAD("pre:"),
         POST_RELOAD("post:");
 
-        private String configName;
+        private final String configName;
 
         CommandStage(String configName) {
             this.configName = configName;
