@@ -18,7 +18,7 @@ import java.util.List;
 public class Configuration {
 
     // Corresponds to the "version" field in config.yml
-    private static final String VERSION = "1.0";
+    private static final String VERSION = "2";
 
     private Configuration() {}
 
@@ -26,6 +26,7 @@ public class Configuration {
 
     public static String START_RELOAD_MESSAGE;
     public static String END_RELOAD_MESSAGE;
+    public static String ERROR_MESSAGE;
     public static String PLUGIN_NOT_SUPPORTED_MESSAGE;
 
     public static List<String> CONSOLE_COMMANDS;
@@ -78,6 +79,7 @@ public class Configuration {
 
         START_RELOAD_MESSAGE = config.getString("start-reload-message");
         END_RELOAD_MESSAGE = config.getString("end-reload-message");
+        ERROR_MESSAGE = config.getString("error-message");
         PLUGIN_NOT_SUPPORTED_MESSAGE = config.getString("plugin-not-supported-message");
 
         CONSOLE_COMMANDS = config.getStringList("console-commands");

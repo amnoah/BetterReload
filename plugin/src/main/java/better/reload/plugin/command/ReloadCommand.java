@@ -49,13 +49,22 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
              * plugin1 twice.
              */
             for (String pluginName : strings) {
-                boolean reloaded = ReloadManager.reload(commandSender, Bukkit.getPluginManager().getPlugin(pluginName));
-                if (!reloaded) sendMessage(commandSender, Configuration.PLUGIN_NOT_SUPPORTED_MESSAGE.replaceAll("%input%", pluginName));
+                ReloadManager.Status status = ReloadManager.reload(commandSender, Bukkit.getPluginManager().getPlugin(pluginName));
+
+                switch (status) {
+                    case FAILURE:
+                        sendMessage(commandSender, Configuration.ERROR_MESSAGE);
+                        break;
+                    case UNSUPPORTED:
+                        sendMessage(commandSender, Configuration.PLUGIN_NOT_SUPPORTED_MESSAGE.replaceAll("%input%", pluginName));
+                }
             }
         // If there's no additional input then call an event for all plugins.
         } else {
             ReloadManager.runCommands(ReloadManager.CommandStage.PRE_RELOAD, commandSender);
-            ReloadManager.reload(commandSender);
+            if (ReloadManager.reload(commandSender).equals(ReloadManager.Status.FAILURE)) {
+                sendMessage(commandSender, Configuration.ERROR_MESSAGE);
+            }
             ReloadManager.runCommands(ReloadManager.CommandStage.POST_RELOAD, commandSender);
         }
 

@@ -18,17 +18,29 @@ import org.bukkit.plugin.RegisteredListener;
 public class ReloadManager {
 
     /**
-     * Initiate a reload for all plugins using the console as the CommandSender.
+     * This enum describes the outcome of a reload.
      */
-    public static void reload() {
-        reload(Bukkit.getConsoleSender());
+    public enum Status {
+        FAILURE,    // A plugin produced a throwable during the reload.
+        SUCCESS,    // No plugins produced a throwable during the reload.
+        UNSUPPORTED // The plugin had no registered ReloadEvent listener.
+    }
+
+    /**
+     * Initiate a reload for all plugins using the console as the CommandSender.
+     * If a single plugin fails, a FAILURE status will be returned. If all succeed, a SUCCESS will be returned.
+     */
+    public static Status reload() {
+        return reload(Bukkit.getConsoleSender());
     }
 
     /**
      * Initiate a reload for all plugins using a given CommandSender.
+     * If a single plugin fails, a FAILURE status will be returned. If all succeed, a SUCCESS will be returned.
      */
-    public static void reload(CommandSender commandSender) {
+    public static Status reload(CommandSender commandSender) {
         ReloadEvent event = new ReloadEvent(commandSender);
+        boolean success = true;
 
         /*
          * We could use Bukkit.getPluginManager().callEvent(), but I'd prefer to use my own error logging system.
@@ -39,24 +51,26 @@ public class ReloadManager {
                 listener.callEvent(event);
             } catch (EventException exception) {
                 ErrorLogging.log(listener, exception);
+                success = false;
             }
         }
+
+        if (success) return Status.SUCCESS;
+        return Status.FAILURE;
     }
 
     /**
      * Initiate a reload for the given plugin using the console as the CommandSender.
-     * Return whether the plugin has a listener for the event.
      */
-    public static boolean reload(Plugin plugin) {
+    public static Status reload(Plugin plugin) {
         return reload(Bukkit.getConsoleSender(), plugin);
     }
 
     /**
      * Initiate a reload for the given plugin using a given CommandSender.
-     * Return whether the plugin has a listener for the event.
      */
-    public static boolean reload(CommandSender commandSender, Plugin plugin) {
-        if (plugin == null) return false;
+    public static Status reload(CommandSender commandSender, Plugin plugin) {
+        if (plugin == null) return Status.UNSUPPORTED;
         boolean reloaded = false;
         ReloadEvent event = new ReloadEvent(commandSender);
 
@@ -68,10 +82,12 @@ public class ReloadManager {
                 }
             } catch (EventException exception) {
                 ErrorLogging.log(listener, exception);
+                return Status.FAILURE;
             }
         }
 
-        return reloaded;
+        if (reloaded) return Status.SUCCESS;
+        return Status.UNSUPPORTED;
     }
 
     /**

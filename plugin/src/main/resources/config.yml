@@ -1,5 +1,5 @@
 # Don't Touch
-version: '1.0'
+version: '2'
 
 #
 # Booleans
@@ -19,6 +19,8 @@ start-reload-message: '&b&lBR > &r&7Starting reload...'
 # Set to '' to disable.
 # All %ms%'s will be replaced with the amount of time a reload took to complete (in milliseconds).
 end-reload-message: '&b&lBR > &r&7Reload finished in &b%ms% &7ms!'
+
+error-message: '&b&lBR > &r&cAn error occurred while reloading! Please check console for more info!'
 
 # All %input%'s will be replaced with the plugin name input that failed to be reloaded.
 plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for &b%input%&c!'
