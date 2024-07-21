@@ -1,7 +1,6 @@
 package better.reload.plugin.util;
 
 import better.reload.plugin.BetterReload;
-import org.bukkit.event.EventException;
 import org.bukkit.plugin.RegisteredListener;
 
 import java.io.BufferedWriter;
@@ -31,16 +30,17 @@ public class ErrorLogging {
     /**
      * Logs the exception involving the listener to a file in the BetterReload folder.
      */
-    public static void log(RegisteredListener listener, EventException exception) {
+    public static void log(RegisteredListener listener, Throwable throwable) {
 
         /*
-         * I swear I hate Bukkit and some day will abandon the platform.
+         * For once Spigot actually improved something as they've updated?!?
          *
-         * Why, when working directly with listeners, do we have no direct access to throwables thrown by calling an
-         * event and rather be abstracted into the EventException which doesn't keep any loggable information?
+         * Legacy versions abstract any throwable into an EventException when an event throws a throwable. Modern
+         * versions let you have access to the original throwable. Having access to the original throwable lets you
+         * have a little bit more information that could be helpful.
          *
-         * Could potentially more directly interact with listeners via reflection to avoid this, but that wouuld
-         * unnecessarily slow reloads and cause potential issues if the Spigot API changes.
+         * Could potentially more directly interact with listeners via reflection to avoid this in legacy, but that
+         * would unnecessarily slow reloads and cause potential issues if the Spigot API changes.
          */
 
         try {
@@ -56,9 +56,11 @@ public class ErrorLogging {
             out.newLine();
             out.write("Listener: " + listener.getListener().getClass().getName());
             out.newLine();
+            out.write("Throwable Type: " + throwable.getClass().getName());
+            out.newLine();
 
-            if (exception.getMessage() != null) {
-                out.write("Throwable Message: " + exception.getMessage());
+            if (throwable.getMessage() != null) {
+                out.write("Throwable Message: " + throwable.getMessage());
                 out.newLine();
             }
 
@@ -67,7 +69,7 @@ public class ErrorLogging {
             out.write("Stacktrace:");
             out.newLine();
 
-            for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
+            for (StackTraceElement stackTraceElement : throwable.getStackTrace()) {
                 out.write(stackTraceElement.toString());
                 out.newLine();
             }

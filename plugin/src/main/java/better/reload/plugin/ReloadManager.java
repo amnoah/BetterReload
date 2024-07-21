@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
@@ -49,8 +48,8 @@ public class ReloadManager {
         for (RegisteredListener listener : ReloadEvent.getHandlerList().getRegisteredListeners()) {
             try {
                 listener.callEvent(event);
-            } catch (EventException exception) {
-                ErrorLogging.log(listener, exception);
+            } catch (Throwable throwable) {
+                ErrorLogging.log(listener, throwable);
                 success = false;
             }
         }
@@ -80,8 +79,8 @@ public class ReloadManager {
                     reloaded = true;
                     listener.callEvent(event);
                 }
-            } catch (EventException exception) {
-                ErrorLogging.log(listener, exception);
+            } catch (Throwable throwable) {
+                ErrorLogging.log(listener, throwable);
                 return Status.FAILURE;
             }
         }
