@@ -80,7 +80,14 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         if (autoComplete == null) regenerateTabCompletions();
-        return autoComplete;
+
+        // If there's no text entered, autocomplete all commands.
+        if (strings == null || strings.length == 0 || strings[strings.length - 1].isEmpty()) return autoComplete;
+
+        // Otherwise find out what commands start with this input.
+        List<String> output = new ArrayList<>();
+        for (String out : autoComplete) if (out.toLowerCase().startsWith(strings[strings.length - 1].toLowerCase())) output.add(out);
+        return output;
     }
 
     /**
