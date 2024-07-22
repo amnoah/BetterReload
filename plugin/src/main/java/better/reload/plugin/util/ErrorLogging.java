@@ -47,7 +47,7 @@ public class ErrorLogging {
             BetterReload.PLUGIN.getLogger().warning("Logging an error for " + listener.getPlugin().getName() + "...");
 
             String time = LocalDateTime.now().format(dateFormatter);
-            File outputFile = createFile(time);
+            File outputFile = createFile(listener.getPlugin().getName(), time);
             BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
 
             out.write("Time: " + time);
@@ -87,9 +87,9 @@ public class ErrorLogging {
      * Creates a file with the given time as the name.
      * Not used anywhere else, but separated to reduce code complexity.
      */
-    private static File createFile(String time) throws IOException {
+    private static File createFile(String plugin, String time) throws IOException {
         if (!Files.exists(folder)) Files.createDirectories(folder);
-        File file = folder.resolve(time + ".log").toFile();
+        File file = folder.resolve(plugin + " " + time + ".log").toFile();
 
         int count = 1;
         while (!file.createNewFile()) {
