@@ -53,7 +53,9 @@ stage for them. Instead, they must use the command `/betterreload:reload`.
 
 # Plugins That Support BetterReload
 
-- Better Messages by JustDoom | [Spigot](https://www.spigotmc.org/resources/better-messages.82830/) | [GitHub](https://github.com/JustDoom/Better-Messages)
+- AnimeBoard by JustDoom | [GitHub](https://github.com/JustDoom/AnimeBoard)
+- BetterDefusal by am noah | [Modrinth](https://modrinth.com/plugin/betterdefusal) | [GitHub](https://github.com/amnoah/BetterDefusal)
+- Better Messages by JustDoom | [Modrinth](https://modrinth.com/plugin/bettermessages) | [GitHub](https://github.com/JustDoom/Better-Messages)
 
 If you would like your plugin featured here, make an issue on the BetterReload GitHub page with the "Add Supported Plugin"
 label. Make sure to include the name of the plugin and a link to the page you would like people directed to.
