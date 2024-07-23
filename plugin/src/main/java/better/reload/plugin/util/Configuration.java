@@ -36,9 +36,9 @@ public class Configuration {
      * This void will load the configuration file and update cached values.
      */
     public static void reload() {
-        BetterReload.PLUGIN.saveDefaultConfig();
-        BetterReload.PLUGIN.reloadConfig();
-        FileConfiguration config = BetterReload.PLUGIN.getConfig();
+        BetterReload.getPlugin().saveDefaultConfig();
+        BetterReload.getPlugin().reloadConfig();
+        FileConfiguration config = BetterReload.getPlugin().getConfig();
 
         // Check if the configuration is outdated, caching it and regenerating the config if so.
         String currentVersion = config.getString("version");
@@ -47,30 +47,30 @@ public class Configuration {
                 int copy = 1;
 
                 while (true) {
-                    if ((new File(BetterReload.PLUGIN.getDataFolder().getPath(), "old-config-" + copy + ".yml").exists())) copy++;
+                    if ((new File(BetterReload.getPlugin().getDataFolder().getPath(), "old-config-" + copy + ".yml").exists())) copy++;
                     else break;
                 }
 
                 String name = "old-config-" + copy + ".yml";
-                BetterReload.PLUGIN.getLogger().warning("Replacing the old configuration file! Moving it to " + name + ".");
+                BetterReload.getPlugin().getLogger().warning("Replacing the old configuration file! Moving it to " + name + ".");
 
-                File source = new File(BetterReload.PLUGIN.getDataFolder(), "config.yml");
-                Path dest = Paths.get(BetterReload.PLUGIN.getDataFolder().getPath(), name);
+                File source = new File(BetterReload.getPlugin().getDataFolder(), "config.yml");
+                Path dest = Paths.get(BetterReload.getPlugin().getDataFolder().getPath(), name);
 
                 Files.copy(source.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
 
                 if (!source.delete()) {
-                    BetterReload.PLUGIN.getLogger().warning("Could not delete the old configuration file!");
+                    BetterReload.getPlugin().getLogger().warning("Could not delete the old configuration file!");
                     return;
                 }
 
-                BetterReload.PLUGIN.saveDefaultConfig();
-                BetterReload.PLUGIN.reloadConfig();
+                BetterReload.getPlugin().saveDefaultConfig();
+                BetterReload.getPlugin().reloadConfig();
             } catch (Exception e) {
-                BetterReload.PLUGIN.getLogger().warning("Could not regenerate the configuration file!");
-                BetterReload.PLUGIN.getLogger().warning("Please delete the current config.yml and restart the server.");
+                BetterReload.getPlugin().getLogger().warning("Could not regenerate the configuration file!");
+                BetterReload.getPlugin().getLogger().warning("Please delete the current config.yml and restart the server.");
             }
-            config = BetterReload.PLUGIN.getConfig();
+            config = BetterReload.getPlugin().getConfig();
         }
 
         // Cache config settings.

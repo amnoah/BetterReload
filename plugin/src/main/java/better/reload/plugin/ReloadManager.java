@@ -126,8 +126,8 @@ public class ReloadManager {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandElements[2]);
                         break;
                     default:
-                        BetterReload.PLUGIN.getLogger().warning("Unsupported player command mode!");
-                        BetterReload.PLUGIN.getLogger().warning("Player command mode: " + commandElements[1]);
+                        BetterReload.getPlugin().getLogger().warning("Unsupported player command mode!");
+                        BetterReload.getPlugin().getLogger().warning("Player command mode: " + commandElements[1]);
                 }
             }
         } else if (commandSender instanceof ConsoleCommandSender) {
@@ -137,8 +137,8 @@ public class ReloadManager {
                 Bukkit.dispatchCommand(commandSender, command.substring(stage.getConfigName().length()));
             }
         } else {
-            BetterReload.PLUGIN.getLogger().warning("Unsupported CommandSender in runCommands method!");
-            BetterReload.PLUGIN.getLogger().warning("CommandSender type: " + commandSender.getClass().getName());
+            BetterReload.getPlugin().getLogger().warning("Unsupported CommandSender in runCommands method!");
+            BetterReload.getPlugin().getLogger().warning("CommandSender type: " + commandSender.getClass().getName());
         }
     }
 }

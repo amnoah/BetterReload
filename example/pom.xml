@@ -6,7 +6,7 @@
 
     <artifactId>example</artifactId>
     <name>${parent.artifactId}-${artifactId}-${version}</name>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <parent>
         <groupId>better.reload</groupId>

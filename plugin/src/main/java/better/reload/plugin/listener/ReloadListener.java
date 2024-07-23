@@ -15,6 +15,6 @@ public class ReloadListener implements Listener {
     @EventHandler
     public void onReload(ReloadEvent event) {
         Configuration.reload();
-        BetterReload.PLUGIN.getReloadCommand().regenerateTabCompletions();
+        BetterReload.getPlugin().getReloadCommand().regenerateTabCompletions();
     }
 }

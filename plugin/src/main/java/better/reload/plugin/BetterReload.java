@@ -12,18 +12,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * This is the main class for the plugin. This class handles the loading and disabling of all the listeners and bStats.
  */
-public class BetterReload extends JavaPlugin {
+public final class BetterReload extends JavaPlugin {
 
-    public static final int B_STATS_ID = 19094;
+    private static final int B_STATS_ID = 19094;
+    private static BetterReload PLUGIN;
 
-    public static BetterReload PLUGIN;
-    public static Metrics METRICS;
-
+    private Metrics metrics;
     private final ReloadCommand reloadCommand = new ReloadCommand();
 
     /*
      * Getters.
      */
+
+    public static BetterReload getPlugin() {
+        return PLUGIN;
+    }
 
     public ReloadCommand getReloadCommand() {
         return reloadCommand;
@@ -37,7 +40,7 @@ public class BetterReload extends JavaPlugin {
     public void onEnable() {
         PLUGIN = this;
 
-        METRICS = new Metrics(this, B_STATS_ID);
+        metrics = new Metrics(this, B_STATS_ID);
 
         Configuration.reload();
 
@@ -60,8 +63,8 @@ public class BetterReload extends JavaPlugin {
     public void onDisable() {
         PLUGIN = null;
 
-        if (METRICS != null) METRICS.shutdown();
-        METRICS = null;
+        if (metrics != null) metrics.shutdown();
+        metrics = null;
 
         HandlerList.unregisterAll(this);
     }

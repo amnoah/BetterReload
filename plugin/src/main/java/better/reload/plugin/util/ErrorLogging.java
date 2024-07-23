@@ -24,7 +24,7 @@ public class ErrorLogging {
 
     static {
         dateFormatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH_mm_ss");
-        folder = BetterReload.PLUGIN.getDataFolder().toPath().resolve("logs");
+        folder = BetterReload.getPlugin().getDataFolder().toPath().resolve("logs");
     }
 
     /**
@@ -44,7 +44,7 @@ public class ErrorLogging {
          */
 
         try {
-            BetterReload.PLUGIN.getLogger().warning("Logging an error for " + listener.getPlugin().getName() + "...");
+            BetterReload.getPlugin().getLogger().warning("Logging an error for " + listener.getPlugin().getName() + "...");
 
             String time = LocalDateTime.now().format(dateFormatter);
             File outputFile = createFile(listener.getPlugin().getName(), time);
@@ -76,9 +76,9 @@ public class ErrorLogging {
 
             out.close();
 
-            BetterReload.PLUGIN.getLogger().warning("Error has been logged in file " + outputFile.getPath() + "!");
+            BetterReload.getPlugin().getLogger().warning("Error has been logged in file " + outputFile.getPath() + "!");
         } catch (Exception e) {
-            BetterReload.PLUGIN.getLogger().warning("BetterReload could not properly log a throwable!");
+            BetterReload.getPlugin().getLogger().warning("BetterReload could not properly log a throwable!");
             e.printStackTrace();
         }
     }
