@@ -59,3 +59,9 @@ stage for them. Instead, they must use the command `/betterreload:reload`.
 
 If you would like your plugin featured here, make an issue on the BetterReload GitHub page with the "Add Supported Plugin"
 label. Make sure to include the name of the plugin and a link to the page you would like people directed to.
+
+# support
+
+For general support, please join my [Discord server](https://discord.gg/ey9uTg3hcy).
+
+For issues with the project, please open an issue in the issues tab.
