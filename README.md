@@ -10,56 +10,28 @@ at literally reloading all plugins to an event that is passed along to plugins i
 command with BetterReload installed, plugins that depend on BetterReload can receive an event that leaves the reloading
 process up to the plugins.
 
-## How Does It Work?
-
-As far as I can tell you cannot simply override a Bukkit command, leading to the decision to instead alter the command 
-before it is fully processed. When the command `/reload` is sent through the server, it is swapped to `/betterreload:reload`
-before being processed.
-
-This method also allows Bukkit's `/reload` command to be accessible through `/bukkit:reload`, although I would personally
-advise against its usage regardless.
-
-## Command Usage
-
-- Use `/reload` to send a reload event to plugins.
-- Any arguments put past the command will be recognized as plugins to specifically send the event to.
-- The permission node is `better.reload`.
-- Example: `/reload` will send a reload event to all plugins with support built in.
-- Example: `/reload plugin1` will send the reload event to only a plugin with the name plugin1.
-- Example: `/reload plugin1 plugin2` will send the reload event to only a plugin with the name plugin1 and a plugin with the name plugin2.
+## Features
+- Overloads the `/reload` command and accessible through `/BetterReload`.
+- Sends a reload event to all plugins if no argument is passed into the command.
+- Sends a reload event to specific plugins if arguments are passed into the command.
+- Custom error logging that will keep console nice and log as much information as possible.
+- Smart tab completion (only on `/BetterReload` in legacy versions, on both commands in modern).
+- Bukkit's reload command is still accessible through `/bukkit:reload`.
 
 ## Limitations
+- `BlockCommandSender`s (typically command blocks) cannot use the `/reload` and must rather use `/BetterReload`.
 
-- `BlockCommandSender`s (typically command blocks) cannot use the `/reload` command as there is no accessible preprocessing
-  stage for them. Instead, they must use the command `/betterreload:reload`.
+# Documentation
 
-# How To Use? (Server Owner)
+For information on how to use BetterReload's commands, please check the [Command wiki](https://github.com/amnoah/BetterReload/wiki/Config).
 
-Simply install the jar file in the latest release labeled as "plugin".
+For information on how to configure BetterReload, please check the [Config wiki](https://github.com/amnoah/BetterReload/wiki/Config).
 
-# How To Use? (Developer)
+For information on how to support the ReloadEvent, please check the [ReloadEvent Support wiki](https://github.com/amnoah/BetterReload/wiki/ReloadEvent-Support).
 
-All releases of BetterReload are available through the [JitPack](https://jitpack.io/#amnoah/betterreload) package repository.
+For information on how to support the ReloadManager, please check the [ReloadManager Support wiki](https://github.com/amnoah/BetterReload/wiki/ReloadManager-Support).
 
-If you are hoping to add support for the ReloadEvent, select the [API-v1.0.0](https://jitpack.io/#amnoah/betterreload/API-v1.0.0)
-release on JitPack and follow the instructions on how to add it to your project. Then, register a Bukkit event listener
-with a ReloadEvent handler inside it as you would do with any other event - it's that easy! An example is available in
-the example module of this project.
-
-If you are hoping to use the plugin's ReloadManager, select the latest Plugin release on JitPack and follow the
-instructions on how to add it to your project. You should then be able to access the ReloadManager class.
-
-Don't forget to add BetterReload as a dependency/soft-dependency (depending on your usage)!
-
-# Plugins That Support BetterReload
-
-- AnimeBoard by JustDoom | [GitHub](https://github.com/JustDoom/AnimeBoard)
-- BetterDefusal by am noah | [Modrinth](https://modrinth.com/plugin/betterdefusal) | [GitHub](https://github.com/amnoah/BetterDefusal)
-- Better Messages by JustDoom | [Modrinth](https://modrinth.com/plugin/bettermessages) | [GitHub](https://github.com/JustDoom/Better-Messages)
-
-If you would like your plugin featured here, make an issue on the BetterReload GitHub page with the "Add Supported Plugin"
-label. Make sure to include the name of the plugin and a link to the page you would like people directed to.
-
+For a list of known supported plugins, please check the [Supported Plugins wiki](https://github.com/amnoah/BetterReload/wiki/Supported-Plugins).
 # Support
 
 For general support, please join my [Discord server](https://discord.gg/ey9uTg3hcy).
