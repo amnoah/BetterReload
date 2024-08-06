@@ -67,19 +67,10 @@ public final class BetterReload extends JavaPlugin {
 
         metrics = new Metrics(this, B_STATS_ID);
 
-        metrics.addCustomChart(new SimplePie("registered_listeners", () ->
-                String.valueOf(ReloadEvent.getHandlerList().getRegisteredListeners().length)
+        // There is 1 listener built into BetterReload itself.
+        metrics.addCustomChart(new SimplePie("using_supported_plugins", () ->
+                String.valueOf(ReloadEvent.getHandlerList().getRegisteredListeners().length > 1)
         ));
-
-        metrics.addCustomChart(new SimplePie("supported_plugins", () -> {
-            List<Plugin> plugins = new ArrayList<>();
-            for (RegisteredListener listener : ReloadEvent.getHandlerList().getRegisteredListeners()) {
-                if (plugins.contains(listener.getPlugin())) continue;
-                plugins.add(listener.getPlugin());
-            }
-
-            return String.valueOf(plugins.size());
-        }));
 
         metrics.addCustomChart(new SimplePie("console_commands", () ->
                 String.valueOf(!Configuration.CONSOLE_COMMANDS.isEmpty())
