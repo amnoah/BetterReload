@@ -23,7 +23,7 @@ process up to the plugins.
 
 # Documentation
 
-For information on how to use BetterReload's commands, please check the [Command wiki](https://github.com/amnoah/BetterReload/wiki/Config).
+For information on how to use BetterReload's commands, please check the [Command wiki](https://github.com/amnoah/BetterReload/wiki/Command).
 
 For information on how to configure BetterReload, please check the [Config wiki](https://github.com/amnoah/BetterReload/wiki/Config).
 
