@@ -40,39 +40,6 @@ public class Configuration {
         BetterReload.getPlugin().reloadConfig();
         FileConfiguration config = BetterReload.getPlugin().getConfig();
 
-        // Check if the configuration is outdated, caching it and regenerating the config if so.
-        String currentVersion = config.getString("version");
-        if (currentVersion == null || !currentVersion.equals(VERSION)) {
-            try {
-                int copy = 1;
-
-                while (true) {
-                    if ((new File(BetterReload.getPlugin().getDataFolder().getPath(), "old-config-" + copy + ".yml").exists())) copy++;
-                    else break;
-                }
-
-                String name = "old-config-" + copy + ".yml";
-                BetterReload.getPlugin().getLogger().warning("Replacing the old configuration file! Moving it to " + name + ".");
-
-                File source = new File(BetterReload.getPlugin().getDataFolder(), "config.yml");
-                Path dest = Paths.get(BetterReload.getPlugin().getDataFolder().getPath(), name);
-
-                Files.copy(source.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
-
-                if (!source.delete()) {
-                    BetterReload.getPlugin().getLogger().warning("Could not delete the old configuration file!");
-                    return;
-                }
-
-                BetterReload.getPlugin().saveDefaultConfig();
-                BetterReload.getPlugin().reloadConfig();
-            } catch (Exception e) {
-                BetterReload.getPlugin().getLogger().warning("Could not regenerate the configuration file!");
-                BetterReload.getPlugin().getLogger().warning("Please delete the current config.yml and restart the server.");
-            }
-            config = BetterReload.getPlugin().getConfig();
-        }
-
         // Cache config settings.
 
         LOG_MESSAGES = config.getBoolean("log-messages");

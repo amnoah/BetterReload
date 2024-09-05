@@ -1,6 +1,9 @@
 package better.reload.plugin.util;
 
 import better.reload.plugin.BetterReload;
+import better.reload.plugin.external.ExternalReload;
+import better.reload.plugin.external.PluginWrapper;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
 import java.io.BufferedWriter;
@@ -27,6 +30,50 @@ public class ErrorLogging {
         folder = BetterReload.getPlugin().getDataFolder().toPath().resolve("logs");
     }
 
+    public static void log(PluginWrapper wrapper, Throwable throwable) {
+        try {
+            Plugin plugin = wrapper.getPlugin();
+            String name = plugin == null ? "UNKNOWN" : plugin.getName();
+
+            BetterReload.getPlugin().getLogger().warning("Logging an error for " + name + "...");
+
+            String time = LocalDateTime.now().format(dateFormatter);
+            File outputFile = createFile(name, time);
+            BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
+
+            out.write("Type: Command");
+            out.newLine();
+            out.write("Time: " + time);
+            out.newLine();
+            out.write("Plugin: " + name);
+            out.newLine();
+            out.write("Throwable Type: " + throwable.getClass().getName());
+            out.newLine();
+
+            if (throwable.getMessage() != null) {
+                out.write("Throwable Message: " + throwable.getMessage());
+                out.newLine();
+            }
+
+            out.newLine();
+            out.newLine();
+            out.write("Stacktrace:");
+            out.newLine();
+
+            for (StackTraceElement stackTraceElement : throwable.getStackTrace()) {
+                out.write(stackTraceElement.toString());
+                out.newLine();
+            }
+
+            out.close();
+
+            BetterReload.getPlugin().getLogger().warning("Error has been logged in file " + outputFile.getPath() + "!");
+        } catch (Exception e) {
+            BetterReload.getPlugin().getLogger().warning("BetterReload could not properly log a throwable!");
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Logs the exception involving the listener to a file in the BetterReload folder.
      */
@@ -50,6 +97,8 @@ public class ErrorLogging {
             File outputFile = createFile(listener.getPlugin().getName(), time);
             BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
 
+            out.write("Type: Event");
+            out.newLine();
             out.write("Time: " + time);
             out.newLine();
             out.write("Plugin: " + listener.getPlugin().getName());

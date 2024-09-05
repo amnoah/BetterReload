@@ -1,6 +1,3 @@
-# Don't Touch
-version: '2'
-
 #
 # Booleans
 #
@@ -28,6 +25,20 @@ plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for
 #
 # Run Commands
 #
+
+external:
+  essentials:
+    command1:
+      executor: SENDER
+      stage: PRE
+      commands:
+        - essentials reload
+
+    command2:
+      executor: CONSOLE
+      stage: POST
+      commands:
+        - bc Reloaded!
 
 # These commands will be run by BetterReload when a reload event is triggered by console.
 #

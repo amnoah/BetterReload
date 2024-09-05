@@ -3,6 +3,7 @@ package better.reload.plugin.command;
 import better.reload.api.ReloadEvent;
 import better.reload.plugin.BetterReload;
 import better.reload.plugin.ReloadManager;
+import better.reload.plugin.external.ExternalManager;
 import better.reload.plugin.util.ChatColor;
 import better.reload.plugin.util.Configuration;
 import org.bukkit.Bukkit;
@@ -13,9 +14,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class runs the logic behind our custom reload command. It's rather basic, just sending a few messages and
@@ -49,9 +48,7 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
              * plugin1 twice.
              */
             for (String pluginName : strings) {
-                ReloadManager.Status status = ReloadManager.reload(commandSender, Bukkit.getPluginManager().getPlugin(pluginName));
-
-                switch (status) {
+                switch (ReloadManager.reload(commandSender, pluginName)) {
                     case FAILURE:
                         sendMessage(commandSender, Configuration.ERROR_MESSAGE);
                         break;
@@ -61,11 +58,9 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
             }
         // If there's no additional input then call an event for all plugins.
         } else {
-            ReloadManager.runCommands(ReloadManager.CommandStage.PRE_RELOAD, commandSender);
             if (ReloadManager.reload(commandSender).equals(ReloadManager.Status.FAILURE)) {
                 sendMessage(commandSender, Configuration.ERROR_MESSAGE);
             }
-            ReloadManager.runCommands(ReloadManager.CommandStage.POST_RELOAD, commandSender);
         }
 
         String end = Configuration.END_RELOAD_MESSAGE.replaceAll("%ms%",String.valueOf(System.currentTimeMillis() - startReload));
@@ -94,10 +89,19 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
      * Update the cache of plugin names to display in a tab completion.
      */
     public void regenerateTabCompletions() {
-        autoComplete = new ArrayList<>();
+        Set<String> names = new HashSet<>();
+
+        // Register all plugins with a registered listener.
         for (RegisteredListener listener : ReloadEvent.getHandlerList().getRegisteredListeners()) {
-            if (!autoComplete.contains(listener.getPlugin().getName())) autoComplete.add(listener.getPlugin().getName());
+            names.add(listener.getPlugin().getName().toLowerCase());
         }
+
+        // Register all external reload commands.
+        names.addAll(ExternalManager.getKeys());
+
+        // Generate the tab completion list.
+        autoComplete = new ArrayList<>();
+        autoComplete.addAll(names);
         Collections.sort(autoComplete);
         autoComplete = Collections.unmodifiableList(autoComplete);
     }

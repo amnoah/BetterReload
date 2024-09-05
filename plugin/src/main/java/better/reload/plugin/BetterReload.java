@@ -57,7 +57,7 @@ public final class BetterReload extends JavaPlugin {
             Class.forName("org.bukkit.event.server.TabCompleteEvent");
             getServer().getPluginManager().registerEvents(new TabCompleteListener(reloadCommand), this);
         } catch (ClassNotFoundException ignored) {
-            getLogger().warning("Tab Completion is not supported in your version.");
+            getLogger().info("Tab Completion on the /reload command is not supported in your version.");
         }
 
         getServer().getPluginManager().registerEvents(new PreCommandProcessingListener(), this);
