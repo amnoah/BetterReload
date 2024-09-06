@@ -4,19 +4,14 @@ import better.reload.api.ReloadEvent;
 import better.reload.plugin.external.ExternalManager;
 import better.reload.plugin.external.ExternalReload;
 import better.reload.plugin.external.PluginWrapper;
-import better.reload.plugin.util.Configuration;
 import better.reload.plugin.util.ErrorLogging;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * This class provides the basic functionality behind the reloading process.

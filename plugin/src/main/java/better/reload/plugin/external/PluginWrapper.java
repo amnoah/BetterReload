@@ -24,7 +24,7 @@ public class PluginWrapper {
         return plugin;
     }
 
-    public void registerExternalReloads(ExternalReload... reload) {
-        externalReloads.addAll(Arrays.asList(reload));
+    public void registerExternalReloads(List<ExternalReload> reload) {
+        externalReloads.addAll(reload);
     }
 }

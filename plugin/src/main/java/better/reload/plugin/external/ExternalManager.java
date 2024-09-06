@@ -1,5 +1,7 @@
 package better.reload.plugin.external;
 
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
@@ -26,11 +28,29 @@ public class ExternalManager {
         return EXTERNAL_RELOAD_MAP.values();
     }
 
-    public static void registerExternalReloads(String name, @Nullable Plugin plugin, ExternalReload... reloads) {
+    public static void registerExternalReloads(String name, @Nullable Plugin plugin, List<ExternalReload> reloads) {
         name = name.toLowerCase();
         PluginWrapper wrapper = EXTERNAL_RELOAD_MAP.get(name);
         if (wrapper == null) wrapper = new PluginWrapper(plugin);
         wrapper.registerExternalReloads(reloads);
         EXTERNAL_RELOAD_MAP.put(name, wrapper);
+    }
+
+    public static void reload(@Nullable ConfigurationSection section) {
+        clear();
+        if (section == null) return;
+
+        for (String plugin : section.getKeys(false)) {
+            ConfigurationSection pluginSection = section.getConfigurationSection(plugin);
+            Plugin p = Bukkit.getPluginManager().getPlugin(plugin);
+            List<ExternalReload> externalReloads = new ArrayList<>();
+
+            for (String command : pluginSection.getKeys(false)) {
+                ConfigurationSection commandSection = pluginSection.getConfigurationSection(command);
+                externalReloads.add(new ExternalReload(commandSection));
+            }
+
+            registerExternalReloads(plugin, p, externalReloads);
+        }
     }
 }

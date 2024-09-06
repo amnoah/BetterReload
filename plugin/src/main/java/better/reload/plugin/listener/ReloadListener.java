@@ -2,7 +2,6 @@ package better.reload.plugin.listener;
 
 import better.reload.api.ReloadEvent;
 import better.reload.plugin.BetterReload;
-import better.reload.plugin.util.Configuration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -12,9 +11,15 @@ import org.bukkit.event.Listener;
  */
 public class ReloadListener implements Listener {
 
+    private final BetterReload betterReload;
+
+    public ReloadListener(BetterReload betterReload) {
+        this.betterReload = betterReload;
+    }
+
     @EventHandler
     public void onReload(ReloadEvent event) {
-        Configuration.reload();
+        betterReload.reload();
         BetterReload.getPlugin().getReloadCommand().regenerateTabCompletions();
     }
 }

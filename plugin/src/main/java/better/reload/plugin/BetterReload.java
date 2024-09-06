@@ -2,19 +2,15 @@ package better.reload.plugin;
 
 import better.reload.api.ReloadEvent;
 import better.reload.plugin.command.ReloadCommand;
+import better.reload.plugin.external.ExternalManager;
 import better.reload.plugin.listener.PreCommandProcessingListener;
 import better.reload.plugin.listener.ReloadListener;
 import better.reload.plugin.listener.TabCompleteListener;
-import better.reload.plugin.util.Configuration;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is the main class for the plugin. This class handles the loading and disabling of all the listeners and bStats.
@@ -47,7 +43,7 @@ public final class BetterReload extends JavaPlugin {
     public void onEnable() {
         PLUGIN = this;
 
-        Configuration.reload();
+        reload();
 
         getCommand("reload").setExecutor(reloadCommand);
         getCommand("reload").setTabCompleter(reloadCommand);
@@ -61,7 +57,7 @@ public final class BetterReload extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new PreCommandProcessingListener(), this);
-        getServer().getPluginManager().registerEvents(new ReloadListener(), this);
+        getServer().getPluginManager().registerEvents(new ReloadListener(this), this);
 
         // Start our metrics.
 
@@ -72,13 +68,15 @@ public final class BetterReload extends JavaPlugin {
                 String.valueOf(ReloadEvent.getHandlerList().getRegisteredListeners().length > 1)
         ));
 
+        /*
         metrics.addCustomChart(new SimplePie("console_commands", () ->
                 String.valueOf(!Configuration.CONSOLE_COMMANDS.isEmpty())
         ));
 
         metrics.addCustomChart(new SimplePie("player_commands", () ->
                 String.valueOf(!Configuration.PLAYER_COMMANDS.isEmpty())
-        ));
+        ));.
+         */
     }
 
     @Override
@@ -89,5 +87,14 @@ public final class BetterReload extends JavaPlugin {
         metrics = null;
 
         HandlerList.unregisterAll(this);
+    }
+
+    public void reload() {
+        BetterReload.getPlugin().saveDefaultConfig();
+        BetterReload.getPlugin().reloadConfig();
+        ConfigurationSection config = BetterReload.getPlugin().getConfig();
+
+        reloadCommand.reload(config);
+        ExternalManager.reload(config.getConfigurationSection("external"));
     }
 }

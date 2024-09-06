@@ -24,16 +24,6 @@ public class PreCommandProcessingListener implements Listener {
     }
 
     /**
-     * This void will modify command from the server sent through RCON before they're processed.
-     * I am unable to test this event, but it should theoretically work.
-     */
-    @EventHandler
-    public void handleRemoteServerCommand(RemoteServerCommandEvent event) {
-        String modified = alterCommand(event.getCommand(), false);
-        if (modified != null) event.setCommand(modified);
-    }
-
-    /**
      * This void will modify command from the server before they're processed.
      */
     @EventHandler

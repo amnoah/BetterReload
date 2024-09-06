@@ -5,12 +5,11 @@ import better.reload.plugin.BetterReload;
 import better.reload.plugin.ReloadManager;
 import better.reload.plugin.external.ExternalManager;
 import better.reload.plugin.util.ChatColor;
-import better.reload.plugin.util.Configuration;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredListener;
 
@@ -22,17 +21,23 @@ import java.util.*;
  */
 public class ReloadCommand implements CommandExecutor, TabExecutor {
 
+    private boolean logMessages;
+    private String startReload, endReload, error, unsupported;
+
     private List<String> autoComplete;
+
+    /*
+     * Command completion methods.
+     */
 
     /**
      * This void will be run when the "/betterreload:reload" command is run.
      */
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        final long startReload = System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
 
-        String start = Configuration.START_RELOAD_MESSAGE;
-        if (!start.isEmpty()) sendMessage(commandSender, start);
+        if (!startReload.isEmpty()) sendMessage(commandSender, startReload);
 
         // If there's additional inputs attempt a reload for the specific inputted plugins.
         if (strings.length > 0) {
@@ -50,20 +55,20 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
             for (String pluginName : strings) {
                 switch (ReloadManager.reload(commandSender, pluginName)) {
                     case FAILURE:
-                        sendMessage(commandSender, Configuration.ERROR_MESSAGE);
+                        sendMessage(commandSender, error);
                         break;
                     case UNSUPPORTED:
-                        sendMessage(commandSender, Configuration.PLUGIN_NOT_SUPPORTED_MESSAGE.replaceAll("%input%", pluginName));
+                        sendMessage(commandSender, unsupported.replaceAll("%input%", pluginName));
                 }
             }
         // If there's no additional input then call an event for all plugins.
         } else {
             if (ReloadManager.reload(commandSender).equals(ReloadManager.Status.FAILURE)) {
-                sendMessage(commandSender, Configuration.ERROR_MESSAGE);
+                sendMessage(commandSender, error);
             }
         }
 
-        String end = Configuration.END_RELOAD_MESSAGE.replaceAll("%ms%",String.valueOf(System.currentTimeMillis() - startReload));
+        String end = endReload.replaceAll("%ms%",String.valueOf(System.currentTimeMillis() - start));
         if (!end.isEmpty()) sendMessage(commandSender, end);
 
         return true;
@@ -85,10 +90,15 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
         return output;
     }
 
+    /*
+     * Config related methods.
+     */
+
     /**
      * Update the cache of plugin names to display in a tab completion.
      */
     public void regenerateTabCompletions() {
+        // Initially use a set so only 1 of each can be put in.
         Set<String> names = new HashSet<>();
 
         // Register all plugins with a registered listener.
@@ -107,12 +117,27 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
     }
 
     /**
+     * Reload all config settings for the command.
+     */
+    public void reload(ConfigurationSection config) {
+        logMessages = config.getBoolean("log-messages", false);
+        startReload = config.getString("start-reload-message", "&b&lBR > &r&7Starting reload...");
+        endReload = config.getString("end-reload-message", "&b&lBR > &r&7Reload finished in &b%ms% &7ms!");
+        error = config.getString("error-message", "&b&lBR > &r&cAn error occurred while reloading! Please check console for more info!");
+        unsupported = config.getString("plugin-not-supported-message", "&b&lBR > &r&cCould not find a reload listener for &b%input%&c!");
+    }
+
+    /*
+     * Utility methods.
+     */
+
+    /**
      * This void reduces redundancy in the process of sending messages.
      */
     private void sendMessage(CommandSender commandSender, String string) {
         if (commandSender instanceof Player) {
             commandSender.sendMessage(ChatColor.translateColorCodes(string));
-            if (Configuration.LOG_MESSAGES) BetterReload.getPlugin().getLogger().info(ChatColor.stripColorCodes(string));
+            if (logMessages) BetterReload.getPlugin().getLogger().info(ChatColor.stripColorCodes(string));
         } else BetterReload.getPlugin().getLogger().info(ChatColor.stripColorCodes(string));
     }
 }
