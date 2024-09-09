@@ -19,6 +19,11 @@ import java.util.HashSet;
 public class ReloadManager {
 
     /**
+     * Prevent initialization, this is a static-only class.
+     */
+    private ReloadManager() {}
+
+    /**
      * This enum describes the outcome of a reload.
      */
     public enum Status {
