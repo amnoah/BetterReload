@@ -1,7 +1,5 @@
-package better.reload.plugin.util;
+package better.reload.plugin;
 
-import better.reload.plugin.BetterReload;
-import better.reload.plugin.external.ExternalReload;
 import better.reload.plugin.external.PluginWrapper;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
@@ -20,7 +18,7 @@ import java.time.format.DateTimeFormatter;
  * Due to a reload potentially reloading many plugins at once, it could absolutely flood console if multiple were to
  * have errors or exceptions. Thus, we log them, print a simple message, and guide the user to where they're logged.
  */
-public class ErrorLogging {
+public class ErrorLogger {
 
     private static final DateTimeFormatter dateFormatter;
     private static final Path folder;
@@ -30,6 +28,10 @@ public class ErrorLogging {
         folder = BetterReload.getPlugin().getDataFolder().toPath().resolve("logs");
     }
 
+    /**
+     * Logs the exception involving an external reload to a file in the BetterReload folder.
+     * TODO: Find out if dispatching a command can even throw an exception.
+     */
     public static void log(PluginWrapper wrapper, Throwable throwable) {
         try {
             Plugin plugin = wrapper.getPlugin();

@@ -89,6 +89,9 @@ public final class BetterReload extends JavaPlugin {
         HandlerList.unregisterAll(this);
     }
 
+    /**
+     * Reload all configuration settings for the plugin.
+     */
     public void reload() {
         BetterReload.getPlugin().saveDefaultConfig();
         BetterReload.getPlugin().reloadConfig();

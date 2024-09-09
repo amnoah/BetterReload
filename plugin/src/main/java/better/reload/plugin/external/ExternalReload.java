@@ -4,6 +4,10 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 
+/**
+ * This represents an individual external reload for a plugin.
+ * An external reload is represented as a node under a plugin's node in the config.
+ */
 public class ExternalReload {
 
     private Executor executor = Executor.CONSOLE;
@@ -48,14 +52,23 @@ public class ExternalReload {
      * Getters.
      */
 
+    /**
+     * Return the commands associated with this external reload.
+     */
     public List<String> getCommands() {
         return commands;
     }
 
+    /**
+     * Return what sort of executor should run this external reload.
+     */
     public Executor getExecutor() {
         return executor;
     }
 
+    /**
+     * Return the stage that this external reload should be performed at.
+     */
     public Stage getStage() {
         return stage;
     }

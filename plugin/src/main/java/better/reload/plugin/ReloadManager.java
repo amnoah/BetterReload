@@ -4,7 +4,6 @@ import better.reload.api.ReloadEvent;
 import better.reload.plugin.external.ExternalManager;
 import better.reload.plugin.external.ExternalReload;
 import better.reload.plugin.external.PluginWrapper;
-import better.reload.plugin.util.ErrorLogging;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -138,7 +137,7 @@ public class ReloadManager {
                         listener.callEvent(event);
                     }
                 } catch (Throwable throwable) {
-                    ErrorLogging.log(listener, throwable);
+                    ErrorLogger.log(listener, throwable);
                     return Status.FAILURE;
                 }
             }
@@ -175,8 +174,9 @@ public class ReloadManager {
                         case SENDER:
                             Bukkit.dispatchCommand(commandSender, command);
                     }
+                // Can dispatching a command throw a throwable? I'm not sure, this may get removed.
                 } catch (Throwable throwable) {
-                    ErrorLogging.log(wrapper, throwable);
+                    ErrorLogger.log(wrapper, throwable);
                     return Status.FAILURE;
                 }
             }

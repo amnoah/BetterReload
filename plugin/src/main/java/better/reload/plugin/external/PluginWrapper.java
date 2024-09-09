@@ -20,7 +20,7 @@ public class PluginWrapper {
         return externalReloads;
     }
 
-    public Plugin getPlugin() {
+    public @Nullable Plugin getPlugin() {
         return plugin;
     }
 

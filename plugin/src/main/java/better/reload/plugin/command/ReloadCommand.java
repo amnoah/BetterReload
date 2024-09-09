@@ -4,7 +4,7 @@ import better.reload.api.ReloadEvent;
 import better.reload.plugin.BetterReload;
 import better.reload.plugin.ReloadManager;
 import better.reload.plugin.external.ExternalManager;
-import better.reload.plugin.util.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -121,10 +121,15 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
      */
     public void reload(ConfigurationSection config) {
         logMessages = config.getBoolean("log-messages", false);
+
         startReload = config.getString("start-reload-message", "&b&lBR > &r&7Starting reload...");
+        startReload = ChatColor.translateAlternateColorCodes('&', startReload);
         endReload = config.getString("end-reload-message", "&b&lBR > &r&7Reload finished in &b%ms% &7ms!");
+        endReload = ChatColor.translateAlternateColorCodes('&', endReload);
         error = config.getString("error-message", "&b&lBR > &r&cAn error occurred while reloading! Please check console for more info!");
+        error = ChatColor.translateAlternateColorCodes('&', error);
         unsupported = config.getString("plugin-not-supported-message", "&b&lBR > &r&cCould not find a reload listener for &b%input%&c!");
+        unsupported = ChatColor.translateAlternateColorCodes('&', unsupported);
     }
 
     /*
@@ -136,8 +141,8 @@ public class ReloadCommand implements CommandExecutor, TabExecutor {
      */
     private void sendMessage(CommandSender commandSender, String string) {
         if (commandSender instanceof Player) {
-            commandSender.sendMessage(ChatColor.translateColorCodes(string));
-            if (logMessages) BetterReload.getPlugin().getLogger().info(ChatColor.stripColorCodes(string));
-        } else BetterReload.getPlugin().getLogger().info(ChatColor.stripColorCodes(string));
+            commandSender.sendMessage(string);
+            if (logMessages) BetterReload.getPlugin().getLogger().info(ChatColor.stripColor(string));
+        } else BetterReload.getPlugin().getLogger().info(ChatColor.stripColor(string));
     }
 }
