@@ -121,17 +121,7 @@ public class ReloadManager {
     public static Status reload(CommandSender commandSender, Plugin plugin, PluginWrapper wrapper) {
         if (plugin == null && wrapper == null) return Status.UNSUPPORTED;
         boolean reloaded = false;
-        Status partial;
         ReloadEvent event = new ReloadEvent(commandSender);
-
-        // Execute pre commands.
-        partial = executeCommands(commandSender, wrapper, ExternalReload.Stage.PRE);
-        switch (partial) {
-            case FAILURE:
-                return partial;
-            case SUCCESS:
-                reloaded = true;
-        }
 
         // Attempt to reload the plugin via event.
         if (plugin != null) {
@@ -148,11 +138,10 @@ public class ReloadManager {
             }
         }
 
-        // Execute post commands.
-        partial = executeCommands(commandSender, wrapper, ExternalReload.Stage.POST);
-        switch (partial) {
+        // Execute commands.
+        switch (executeCommands(commandSender, wrapper)) {
             case FAILURE:
-                return partial;
+                return Status.FAILURE;
             case SUCCESS:
                 reloaded = true;
         }
@@ -164,12 +153,11 @@ public class ReloadManager {
     /**
      * Run all commands for the given plugin wrapper at the given stage.
      */
-    public static Status executeCommands(CommandSender commandSender, PluginWrapper wrapper, ExternalReload.Stage stage) {
+    public static Status executeCommands(CommandSender commandSender, PluginWrapper wrapper) {
         if (wrapper == null) return Status.UNSUPPORTED;
 
         // Cycle through all registered reloads with this wrapper and run the ones for the given stage.
         for (ExternalReload reload : wrapper.getExternalReloads()) {
-            if (reload.getStage() != stage) continue;
             for (String command : reload.getCommands()) {
                 try {
                     switch (reload.getExecutor()) {

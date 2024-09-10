@@ -10,6 +10,10 @@ at literally reloading all plugins to an event that is passed along to plugins i
 command with BetterReload installed, plugins that depend on BetterReload can receive an event that leaves the reloading
 process up to the plugins.
 
+As of update 1.4.0, the plugin also includes a configurable system allowing any plugin to be supported via the external
+section of the config.yml file. Please read more about this [here](https://github.com/amnoah/BetterReload/wiki/Config#external-reload).
+Ideally plugins should support the event, but this ensures universal support.
+
 ## Features
 - Overloads the `/reload` command and accessible through `/BetterReload`.
 - Sends a reload event to all plugins if no argument is passed into the command.
@@ -17,6 +21,7 @@ process up to the plugins.
 - Custom error logging that will keep console nice and log as much information as possible.
 - Smart tab completion (only on `/BetterReload` in legacy versions, on both commands in modern).
 - Bukkit's reload command is still accessible through `/bukkit:reload`.
+- Ability to add other plugin reload commands to the reload process.
 
 ## Limitations
 - `BlockCommandSender`s (typically command blocks) cannot use the `/reload` and must rather use `/BetterReload`.

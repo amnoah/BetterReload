@@ -27,15 +27,13 @@ plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for
 #
 
 external:
-  essentials:
-    reload:
-      executor: SENDER
-      stage: PRE
-      commands:
-        - essentials reload
-
-    announcement:
-      executor: CONSOLE
-      stage: POST
-      commands:
-        - bc Reloaded!
+#  essentials:
+#    reload:
+#      executor: SENDER
+#      commands:
+#        - essentials reload
+#
+#    announcement:
+#      executor: CONSOLE
+#      commands:
+#        - bc Reloaded!
