@@ -27,13 +27,12 @@ plugin-not-supported-message: '&b&lBR > &r&cCould not find a reload listener for
 #
 
 external:
-#  essentials:
-#    reload:
-#      executor: SENDER
-#      commands:
-#        - essentials reload
-#
-#    announcement:
-#      executor: CONSOLE
-#      commands:
-#        - bc Reloaded!
+  # I'm unsure of what version added these commands onto the typical reload command.
+  # You may have to remove this on legacy versions.
+  bukkit:
+    reload-commands-yml:
+      commands:
+        - 'bukkit:reload commands'
+    reload-permissions-yml:
+      commands:
+        - 'bukkit:reload permissions'
